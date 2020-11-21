@@ -4,13 +4,21 @@
 void rasterize_triangle(const Program& program, const UniformAttributes& uniform, const VertexAttributes& v1, const VertexAttributes& v2, const VertexAttributes& v3, FrameBuffer& frameBuffer)
 {
 		// Collect coordinates into a matrix and convert to canonical representation
+		/* x0, y0, z0, 1
+		   x1, y1, z1, 1
+			 x2, y2, z2, 1
+		*/
+		
 		Eigen::Matrix<float,3,4> p;
 		p.row(0) = v1.position.array()/v1.position[3];
 		p.row(1) = v2.position.array()/v2.position[3];
 		p.row(2) = v3.position.array()/v3.position[3];
 
 		// Coordinates are in -1..1, rescale to pixel size (x,y only)
+		// (-1, -1), (1, 1) => (0, 0), (1, 1)
+		// x
 		p.col(0) = ((p.col(0).array()+1.0)/2.0)*frameBuffer.rows();		
+		// y
 		p.col(1) = ((p.col(1).array()+1.0)/2.0)*frameBuffer.cols();
 
 		// Find bounding box in pixels
@@ -20,6 +28,7 @@ void rasterize_triangle(const Program& program, const UniformAttributes& uniform
 		int uy = std::ceil(p.col(1).maxCoeff());
 
 		// Clamp to framebuffer
+		// Ensure the bounding box is inside the screen
 		lx = std::min(std::max(lx,int(0)),int(frameBuffer.rows()-1));
 		ly = std::min(std::max(ly,int(0)),int(frameBuffer.cols()-1));
 		ux = std::min(std::max(ux,int(0)),int(frameBuffer.rows()-1));
@@ -46,6 +55,7 @@ void rasterize_triangle(const Program& program, const UniformAttributes& uniform
 				{
 					VertexAttributes va = VertexAttributes::interpolate(v1,v2,v3,b[0],b[1],b[2]);
 					// Only render fragments within the bi-unit cube
+					// A way to save computation
 					if (va.position[2] >= -1 && va.position[2] <= 1)
 					{ 
 						FragmentAttributes frag = program.FragmentShader(va,uniform);
@@ -60,8 +70,8 @@ void rasterize_triangles(const Program& program, const UniformAttributes& unifor
 {
 	// Call vertex shader on all vertices
 	std::vector<VertexAttributes> v(vertices.size());
-	for (unsigned i=0; i<vertices.size();i++)
-		v[i] = program.VertexShader(vertices[i],uniform);
+	for (unsigned i = 0; i < vertices.size(); i++)
+		v[i] = program.VertexShader(vertices[i], uniform);
 
 	// Call the rasterization function on every triangle
 	for (unsigned i=0; i<vertices.size()/3; i++)
