@@ -16,7 +16,8 @@ int main()
 {
 
 	// The Framebuffer storing the image rendered by the rasterizer
-	Eigen::Matrix<FrameBufferAttributes,Eigen::Dynamic,Eigen::Dynamic> frameBuffer(500,500);
+	// Eigen::Matrix<FrameBufferAttributes,Eigen::Dynamic,Eigen::Dynamic> frameBuffer(500,500);
+	Eigen::Matrix<FrameBufferAttributes,Eigen::Dynamic,Eigen::Dynamic> frameBuffer(50,50);
 
 	// Global Constants (empty in this example)
 	UniformAttributes uniform;
@@ -33,7 +34,7 @@ int main()
 	// The fragment shader uses a fixed color
 	program.FragmentShader = [](const VertexAttributes& va, const UniformAttributes& uniform)
 	{
-		return FragmentAttributes(1,0,0);
+		return FragmentAttributes(va.color[0], va.color[1], va.color[2]);
 	};
 
 	// The blending shader converts colors between 0 and 1 to uint8
@@ -47,6 +48,10 @@ int main()
 	vertices.push_back(VertexAttributes(-1,-1,0));
 	vertices.push_back(VertexAttributes(1,-1,0));
 	vertices.push_back(VertexAttributes(0,1,0));
+
+	vertices[0].color << 1, 0, 0, 1;
+	vertices[1].color << 0, 0, 1, 1;
+	vertices[2].color << 0, 1, 0, 1;
 
 	rasterize_triangles(program,uniform,vertices,frameBuffer);
 

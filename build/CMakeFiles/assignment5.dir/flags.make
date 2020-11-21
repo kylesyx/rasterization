@@ -6,5 +6,5 @@ CXX_DEFINES = -DDATA_DIR=\"/Users/yanhaoli/Dropbox/university/nyu/classes/20fall
 
 CXX_INCLUDES = -isystem /Users/yanhaoli/Dropbox/university/nyu/classes/20fall/computer-graphic/rasterization/ext/eigen -isystem /Users/yanhaoli/Dropbox/university/nyu/classes/20fall/computer-graphic/rasterization/ext/gif-h -isystem /Users/yanhaoli/Dropbox/university/nyu/classes/20fall/computer-graphic/rasterization/ext/stb
 
-CXX_FLAGS = -O3 -DNDEBUG -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.0.sdk -std=gnu++11
+CXX_FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.0.sdk -std=gnu++11
 
