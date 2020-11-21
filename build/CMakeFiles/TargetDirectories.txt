@@ -1,3 +1,0 @@
-/Users/yanhaoli/Dropbox/university/nyu/classes/20fall/computer-graphic/rasterization/build/CMakeFiles/rebuild_cache.dir
-/Users/yanhaoli/Dropbox/university/nyu/classes/20fall/computer-graphic/rasterization/build/CMakeFiles/edit_cache.dir
-/Users/yanhaoli/Dropbox/university/nyu/classes/20fall/computer-graphic/rasterization/build/CMakeFiles/assignment5.dir
