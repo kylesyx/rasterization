@@ -16,8 +16,8 @@ int main()
 {
 
 	// The Framebuffer storing the image rendered by the rasterizer
-	// Eigen::Matrix<FrameBufferAttributes,Eigen::Dynamic,Eigen::Dynamic> frameBuffer(500,500);
-	Eigen::Matrix<FrameBufferAttributes,Eigen::Dynamic,Eigen::Dynamic> frameBuffer(50,50);
+	Eigen::Matrix<FrameBufferAttributes,Eigen::Dynamic,Eigen::Dynamic> frameBuffer(500,500);
+	// Eigen::Matrix<FrameBufferAttributes,Eigen::Dynamic,Eigen::Dynamic> frameBuffer(50,50);
 
 	// Global Constants (empty in this example)
 	UniformAttributes uniform;
@@ -34,7 +34,8 @@ int main()
 	// The fragment shader uses a fixed color
 	program.FragmentShader = [](const VertexAttributes& va, const UniformAttributes& uniform)
 	{
-		return FragmentAttributes(va.color[0], va.color[1], va.color[2]);
+		return FragmentAttributes(0, 1, 0);
+		// return FragmentAttributes(va.color[0], va.color[1], va.color[2]);
 	};
 
 	// The blending shader converts colors between 0 and 1 to uint8
@@ -45,15 +46,30 @@ int main()
 
 	// One triangle in the center of the screen
 	vector<VertexAttributes> vertices;
+	//Edge 1
 	vertices.push_back(VertexAttributes(-1,-1,0));
 	vertices.push_back(VertexAttributes(1,-1,0));
+
+	// Edge 2
+	vertices.push_back(VertexAttributes(1,-1,0));
 	vertices.push_back(VertexAttributes(0,1,0));
+
+	// Edge 3
+	vertices.clear();
+	vertices.push_back(VertexAttributes(-1,-1,0));
+	vertices.push_back(VertexAttributes(0,1,0));
+
+	// Change background color
+	for (unsigned i = 0; i < frameBuffer.rows(); i++)
+		for (unsigned j = 0; j < frameBuffer.cols(); j++)
+			frameBuffer(i, j).color << 255, 255, 255, 255;
 
 	vertices[0].color << 1, 0, 0, 1;
 	vertices[1].color << 0, 0, 1, 1;
 	vertices[2].color << 0, 1, 0, 1;
 
-	rasterize_triangles(program,uniform,vertices,frameBuffer);
+	rasterize_lines(program, uniform, vertices, 5, frameBuffer);
+
 
 	vector<uint8_t> image;
 	framebuffer_to_uint8(frameBuffer,image);
