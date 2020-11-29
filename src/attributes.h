@@ -5,29 +5,27 @@
 class VertexAttributes
 {
 	public:
-	Eigen::Vector4f position;
-	Eigen::Vector4f color;
-
 	VertexAttributes(float x = 0, float y = 0, float z = 0, float w = 1)
 	{
 		position << x,y,z,w;
 	}
 
-	// Interpolates the vertex attributes
-	static VertexAttributes interpolate(
-			const VertexAttributes& a,
-			const VertexAttributes& b,
-			const VertexAttributes& c,
-			const float alpha, 
-			const float beta, 
-			const float gamma
-	) 
-	{
-			VertexAttributes r;
-			r.position = alpha*a.position + beta*b.position + gamma*c.position;
-			r.color = alpha*a.color + beta*b.color + gamma*c.color;
-			return r;
-	}
+    // Interpolates the vertex attributes
+    static VertexAttributes interpolate(
+        const VertexAttributes& a,
+        const VertexAttributes& b,
+        const VertexAttributes& c,
+        const float alpha, 
+        const float beta, 
+        const float gamma
+    ) 
+    {
+        VertexAttributes r;
+        r.position = alpha*a.position + beta*b.position + gamma*c.position;
+        return r;
+    }
+
+	Eigen::Vector4f position;
 };
 
 class FragmentAttributes
@@ -55,4 +53,6 @@ class FrameBufferAttributes
 class UniformAttributes
 {
 	public:
+	Eigen::Matrix4f view;
+	
 };
