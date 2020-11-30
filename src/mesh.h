@@ -3,4 +3,4 @@
 #include "raster.h"
 #include "load.h"
 
-std::vector<VertexAttributes> get_mesh_vertices(const Scene &scene);
+std::vector<VertexAttributes> get_meshes_vertices(const Scene &scene, bool lines = false);

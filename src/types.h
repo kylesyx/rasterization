@@ -13,6 +13,8 @@
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
 
+#include "attributes.h"
+
 using namespace Eigen;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -88,6 +90,8 @@ struct Mesh : public Object {
 	Mesh(const std::string &filename);
 	virtual ~Mesh() = default;
 	virtual bool intersect(const Ray &ray, Intersection &hit) override;
+	virtual std::vector<VertexAttributes> get_triangles_vertices();
+	virtual std::vector<VertexAttributes> get_lines_vertices();
 };
 
 // We use smart pointers to hold objects as this is a virtual class

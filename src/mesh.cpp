@@ -6,16 +6,40 @@ Mesh::Mesh(const std::string &filename) {
 	bvh = AABBTree(vertices, facets);
 }
 
-std::vector<VertexAttributes> get_mesh_vertices(const Scene &scene) {
+std::vector<VertexAttributes> Mesh::get_triangles_vertices() {
+	std::vector<VertexAttributes> vertices;
+	for (int i = 0; i < this->facets.rows(); i++) {
+		// v1 v2 v3
+		Eigen::VectorXi facet = this->facets.row(i);
+		for (int j = 0; j < facet.size(); j++) {
+			Eigen::VectorXd vertex = this->vertices.row(facet[j]);
+			vertices.push_back(VertexAttributes(vertex[0], vertex[1], vertex[2]));
+		}
+	}
+	return vertices;
+}
+
+std::vector<VertexAttributes> Mesh::get_lines_vertices() {
+	std::vector<VertexAttributes> vertices;
+	for (int i = 0; i < this->facets.rows(); i++) {
+		// v1 v2 v3
+		Eigen::VectorXi facet = this->facets.row(i);
+		for (int j = 0; j < facet.size(); j++) {
+			// two endpoints of the edge
+			Eigen::VectorXd vertex1 = this->vertices.row(facet[j % facet.size()]);
+			Eigen::VectorXd vertex2 = this->vertices.row(facet[(j + 1) % facet.size()]);
+			vertices.push_back(VertexAttributes(vertex1[0], vertex1[1], vertex1[2]));
+			vertices.push_back(VertexAttributes(vertex2[0], vertex2[1], vertex2[2]));
+		}
+	}
+	return vertices;
+}
+
+std::vector<VertexAttributes> get_meshes_vertices(const Scene &scene, bool lines) {
 	std::vector<VertexAttributes> vertices;
 	for (auto &mesh : scene.meshes) {
-		for (int i = 0; i < mesh->facets.rows(); i++) {
-			Eigen::VectorXi facet = mesh->facets.row(i);
-			for (int j = 0; j < facet.size(); j++) {
-				Eigen::VectorXd vertex = mesh->vertices.row(facet[j]);
-				vertices.push_back(VertexAttributes(vertex[0], vertex[1], vertex[2]));
-			}
-		}
+		std::vector<VertexAttributes> mesh_vertices = lines ? mesh->get_lines_vertices() : mesh->get_triangles_vertices();
+		vertices.insert(vertices.end(), mesh_vertices.begin(), mesh_vertices.end());
 	}
 
 	return vertices;

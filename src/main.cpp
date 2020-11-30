@@ -43,7 +43,8 @@ void render_scene(const Scene &scene) {
 		return FrameBufferAttributes(fa.color[0]*255,fa.color[1]*255,fa.color[2]*255,fa.color[3]*255);
 	};
 
-	rasterize_triangles(program, uniform, get_mesh_vertices(scene), frameBuffer);
+	// rasterize_triangles(program, uniform, get_meshes_vertices(scene), frameBuffer);
+	rasterize_lines(program, uniform, get_meshes_vertices(scene, true), 1, frameBuffer);
 
 	vector<uint8_t> image;
 	framebuffer_to_uint8(frameBuffer,image);
