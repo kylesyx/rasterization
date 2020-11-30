@@ -35,10 +35,10 @@ std::vector<VertexAttributes> Mesh::get_lines_vertices() {
 	return vertices;
 }
 
-std::vector<VertexAttributes> get_meshes_vertices(const Scene &scene, bool lines) {
+std::vector<VertexAttributes> get_meshes_vertices(const Scene &scene, const std::string &type) {
 	std::vector<VertexAttributes> vertices;
 	for (auto &mesh : scene.meshes) {
-		std::vector<VertexAttributes> mesh_vertices = lines ? mesh->get_lines_vertices() : mesh->get_triangles_vertices();
+		std::vector<VertexAttributes> mesh_vertices = type == "lines" ? mesh->get_lines_vertices() : mesh->get_triangles_vertices();
 		vertices.insert(vertices.end(), mesh_vertices.begin(), mesh_vertices.end());
 	}
 
