@@ -1,3 +1,5 @@
+#pragma once
+
 #include "types.h"
 
 // JSON parser library (https://github.com/nlohmann/json)

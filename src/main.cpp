@@ -7,6 +7,7 @@
 #include "raster.h"
 #include "types.h"
 #include "load.h"
+#include "mesh.h"
 
 // Image writing library
 #define STB_IMAGE_WRITE_IMPLEMENTATION // Do not include this line twice in your project!
@@ -42,18 +43,7 @@ void render_scene(const Scene &scene) {
 		return FrameBufferAttributes(fa.color[0]*255,fa.color[1]*255,fa.color[2]*255,fa.color[3]*255);
 	};
 
-	vector<VertexAttributes> vertices;
-	for (auto &mesh : scene.meshes) {
-		for (int i = 0; i < mesh->facets.rows(); i++) {
-			Eigen::VectorXi facet = mesh->facets.row(i);
-			for (int j = 0; j < facet.size(); j++) {
-				Eigen::VectorXd vertex = mesh->vertices.row(facet[j]);
-				vertices.push_back(VertexAttributes(vertex[0], vertex[1], vertex[2]));
-			}
-		}
-	}
-
-	rasterize_triangles(program,uniform,vertices,frameBuffer);
+	rasterize_triangles(program, uniform, get_mesh_vertices(scene), frameBuffer);
 
 	vector<uint8_t> image;
 	framebuffer_to_uint8(frameBuffer,image);
