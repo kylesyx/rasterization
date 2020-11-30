@@ -37,7 +37,6 @@ class FragmentAttributes
 	}
 
 	Eigen::Vector4f color;
-	Eigen::Vector4f position;
 };
 
 class FrameBufferAttributes
@@ -46,15 +45,12 @@ class FrameBufferAttributes
 	FrameBufferAttributes(uint8_t r = 0, uint8_t g = 0, uint8_t b = 0, uint8_t a = 255)
 	{
 		color << r,g,b,a;
-		depth = 2;
 	}
 
 	Eigen::Matrix<uint8_t,4,1> color;
-	float depth;
 };
 
 class UniformAttributes
 {
 	public:
-	Eigen::Vector4f triangle_color;
 };

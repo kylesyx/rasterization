@@ -10,7 +10,7 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION // Do not include this line twice in your project!
 #include "stb_image_write.h"
 
-#include <gif.h>
+#include "gif.h"
 
 using namespace std;
 
@@ -35,44 +35,36 @@ int main()
 	// The fragment shader uses a fixed color
 	program.FragmentShader = [](const VertexAttributes& va, const UniformAttributes& uniform)
 	{
-
-		FragmentAttributes out(uniform.triangle_color[0],uniform.triangle_color[1],uniform.triangle_color[2],uniform.triangle_color[3]);
-		out.position = va.position;
-		return out;
+		return FragmentAttributes(1,0,0);
 	};
 
 	// The blending shader converts colors between 0 and 1 to uint8
 	program.BlendingShader = [](const FragmentAttributes& fa, const FrameBufferAttributes& previous)
 	{
-		float alpha = fa.color[3];
-
-		Eigen::Vector4f outcolor = fa.color.array() * alpha + (previous.color.cast<float>().array() / 255.0) * (1 - alpha);
-		
-		return FrameBufferAttributes(outcolor[0]*255,outcolor[1]*255,outcolor[2]*255,outcolor[3]*255);
-		
+		return FrameBufferAttributes(fa.color[0]*255,fa.color[1]*255,fa.color[2]*255,fa.color[3]*255);
 	};
 
 	// One triangle in the center of the screen
-	vector<VertexAttributes> vertices_1;
-	vertices_1.push_back(VertexAttributes(-1,-1,0));
-	vertices_1.push_back(VertexAttributes(1,-1,0));
-	vertices_1.push_back(VertexAttributes(-1,1,0));
+	vector<VertexAttributes> vertices;
+	vertices.push_back(VertexAttributes(-1,-1,0));
+	vertices.push_back(VertexAttributes(1,-1,0));
+	vertices.push_back(VertexAttributes(0,1,0));
 
-	vector<VertexAttributes> vertices_2;
-	vertices_2.push_back(VertexAttributes(-1,-1,0.5));
-	vertices_2.push_back(VertexAttributes(1,-1,0.5));
-	vertices_2.push_back(VertexAttributes(1,1,0.5));
-
-	uniform.triangle_color << 1,0,0,1;
-	rasterize_triangles(program,uniform,vertices_1,frameBuffer);
-
-	uniform.triangle_color << 0,0,1,0.5;
-	rasterize_triangles(program,uniform,vertices_2,frameBuffer);
-
-
+	const char * fileName = "triangle.gif";
 	vector<uint8_t> image;
-	framebuffer_to_uint8(frameBuffer,image);
-	stbi_write_png("triangle.png", frameBuffer.rows(), frameBuffer.cols(), 4, image.data(), frameBuffer.rows()*4);
-	
+	int delay = 25;
+	GifWriter g;
+	GifBegin(&g, fileName, frameBuffer.rows(), frameBuffer.cols(), delay);
+
+	for (float i = 0; i < 1; i+= 0.2) {
+		frameBuffer.setConstant(FrameBufferAttributes());
+		vertices[2].position[1] -= 0.2;
+		rasterize_triangles(program,uniform,vertices,frameBuffer);
+		framebuffer_to_uint8(frameBuffer, image);
+		GifWriteFrame(&g, image.data(), frameBuffer.rows(), frameBuffer.cols(), delay);
+	}
+
+	GifEnd(&g);
+
 	return 0;
 }
