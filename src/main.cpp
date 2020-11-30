@@ -57,7 +57,7 @@ void render_scene(const Scene &scene, int shading_option) {
 	switch (shading_option) {
 		// Wireframe
 		case 1: {
-			rasterize_lines(program, uniform, get_meshes_vertices(scene, "lines"), 0.5, frameBuffer);
+			rasterize_lines(program, uniform, get_meshes_vertices(scene, "lines"), 1, frameBuffer);
 			break;
 		}
 		// Flat shading

@@ -74,8 +74,13 @@ void rasterize_triangles(const Program& program, const UniformAttributes& unifor
 		v[i] = program.VertexShader(vertices[i], uniform);
 
 	// Call the rasterization function on every triangle
-	for (unsigned i=0; i<vertices.size()/3; i++)
-		rasterize_triangle(program,uniform,v[i*3+0],v[i*3+1],v[i*3+2],frameBuffer);
+	for (unsigned i = 0; i < vertices.size() / 3; i++) {
+		VertexAttributes v1 = v[i * 3 + 0];
+		VertexAttributes v2 = v[i * 3 + 1];
+		VertexAttributes v3 = v[i * 3 + 2];
+
+		rasterize_triangle(program, uniform, v1, v2, v3, frameBuffer);
+	}
 }
 
 void rasterize_line(const Program& program, const UniformAttributes& uniform, const VertexAttributes& v1, const VertexAttributes& v2, float line_thickness, FrameBuffer& frameBuffer)

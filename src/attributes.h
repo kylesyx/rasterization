@@ -5,9 +5,11 @@
 class VertexAttributes
 {
 	public:
-	VertexAttributes(float x = 0, float y = 0, float z = 0, float w = 1)
+	VertexAttributes(float x = 0, float y = 0, float z = 0, float w = 1, 
+	float nx = 0, float ny = 0, float nz = 0, float nw = 1)
 	{
-		position << x,y,z,w;
+		position << x, y, z, w;
+		normal << nx, ny, nz, w;
 	}
 
     // Interpolates the vertex attributes
@@ -26,6 +28,7 @@ class VertexAttributes
     }
 
 	Eigen::Vector4f position;
+	Eigen::Vector4f normal;
 };
 
 class FragmentAttributes
