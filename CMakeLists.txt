@@ -6,6 +6,8 @@ add_executable("assignment5"
 	src/main.cpp
 	src/raster.h
 	src/raster.cpp
+	src/bvh.cpp
+	src/intersect.cpp
 	src/load.cpp
 	src/load.h
 	src/types.h
