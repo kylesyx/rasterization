@@ -21,6 +21,7 @@ void render_scene(const Scene &scene, int shading_option) {
 
 	// Global Constants (empty in this example)
 	UniformAttributes uniform;
+	uniform.color << 1,1,1,1;
 
 	// Basic rasterization program
 	Program program;
@@ -34,23 +35,34 @@ void render_scene(const Scene &scene, int shading_option) {
 	// The fragment shader uses a fixed color
 	program.FragmentShader = [](const VertexAttributes& va, const UniformAttributes& uniform)
 	{
-		return FragmentAttributes(1,0,0);
+		FragmentAttributes out(uniform.color(0),uniform.color(1),uniform.color(2),uniform.color(3));
+		out.position = va.position;
+		return out;
 	};
 
 	// The blending shader converts colors between 0 and 1 to uint8
 	program.BlendingShader = [](const FragmentAttributes& fa, const FrameBufferAttributes& previous)
 	{
-		return FrameBufferAttributes(fa.color[0]*255,fa.color[1]*255,fa.color[2]*255,fa.color[3]*255);
+		// Camera is at (0,0,-1)
+		// z smaller, closer the object
+		if (fa.position[2] < previous.depth) {
+			FrameBufferAttributes out(fa.color[0]*255, fa.color[1]*255, fa.color[2]*255, fa.color[3]*255);
+			out.depth = fa.position[2];
+			return out;
+		} else {
+			return previous;
+		}
 	};
 
 	switch (shading_option) {
 		// Wireframe
 		case 1: {
-			rasterize_lines(program, uniform, get_meshes_vertices(scene, "lines"), 1, frameBuffer);
+			rasterize_lines(program, uniform, get_meshes_vertices(scene, "lines"), 0.5, frameBuffer);
 			break;
 		}
 		// Flat shading
 		case 2: {
+			rasterize_triangles(program, uniform, get_meshes_vertices(scene, "triangles"), frameBuffer);
 			break;
 		}
 		// Per-vertex shading
