@@ -56,14 +56,43 @@ struct Material {
 	double refraction_index;
 };
 
+struct AABBTree {
+	struct Node {
+		AlignedBox3d bbox;
+		int parent; // Index of the parent node (-1 for root)
+		int left; // Index of the left child (-1 for a leaf)
+		int right; // Index of the right child (-1 for a leaf)
+		int triangle; // Index of the node triangle (-1 for internal nodes)
+	};
+
+	std::vector<Node> nodes;
+	int root;
+
+	AABBTree() = default; // Default empty constructor
+	AABBTree(const MatrixXd &V, const MatrixXi &F); // Build a BVH from an existing mesh
+};
+
 struct Object {
 	Material material;
 	virtual ~Object() = default; // Classes with virtual methods should have a virtual destructor!
 	virtual bool intersect(const Ray &ray, Intersection &hit) = 0;
 };
 
+struct Mesh : public Object {
+	MatrixXd vertices; // n x 3 matrix (n points)
+	MatrixXi facets; // m x 3 matrix (m triangles)
+
+	AABBTree bvh;
+
+	Mesh() = default; // Default empty constructor
+	Mesh(const std::string &filename);
+	virtual ~Mesh() = default;
+	virtual bool intersect(const Ray &ray, Intersection &hit) override;
+};
+
 // We use smart pointers to hold objects as this is a virtual class
 typedef std::shared_ptr<Object> ObjectPtr;
+typedef std::shared_ptr<Mesh> MeshPtr;
 
 struct Sphere : public Object {
 	Vector3d position;
@@ -82,34 +111,6 @@ struct Parallelogram : public Object {
 	virtual bool intersect(const Ray &ray, Intersection &hit) override;
 };
 
-struct AABBTree {
-	struct Node {
-		AlignedBox3d bbox;
-		int parent; // Index of the parent node (-1 for root)
-		int left; // Index of the left child (-1 for a leaf)
-		int right; // Index of the right child (-1 for a leaf)
-		int triangle; // Index of the node triangle (-1 for internal nodes)
-	};
-
-	std::vector<Node> nodes;
-	int root;
-
-	AABBTree() = default; // Default empty constructor
-	AABBTree(const MatrixXd &V, const MatrixXi &F); // Build a BVH from an existing mesh
-};
-
-struct Mesh : public Object {
-	MatrixXd vertices; // n x 3 matrix (n points)
-	MatrixXi facets; // m x 3 matrix (m triangles)
-
-	AABBTree bvh;
-
-	Mesh() = default; // Default empty constructor
-	Mesh(const std::string &filename);
-	virtual ~Mesh() = default;
-	virtual bool intersect(const Ray &ray, Intersection &hit) override;
-};
-
 struct Scene {
 	Vector3d background_color;
 	Vector3d ambient_light;
@@ -118,6 +119,7 @@ struct Scene {
 	std::vector<Material> materials;
 	std::vector<Light> lights;
 	std::vector<ObjectPtr> objects;
+	std::vector<MeshPtr> meshes;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

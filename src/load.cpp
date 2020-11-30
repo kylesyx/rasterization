@@ -84,6 +84,8 @@ Scene load_scene(const std::string &filename) {
 			// Load mesh from a file
 			std::string filename = std::string(DATA_DIR) + entry["Path"].get<std::string>();
 			object = std::make_shared<Mesh>(filename);
+			MeshPtr mesh = std::make_shared<Mesh>(filename);
+			scene.meshes.push_back(mesh);
 		}
 		object->material = scene.materials[entry["Material"]];
 		scene.objects.push_back(object);
