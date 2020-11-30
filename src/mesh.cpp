@@ -10,10 +10,15 @@ std::vector<VertexAttributes> Mesh::get_triangles_vertices() {
 	std::vector<VertexAttributes> vertices;
 	for (int i = 0; i < this->facets.rows(); i++) {
 		// v1 v2 v3
-		Eigen::VectorXi facet = this->facets.row(i);
+		Eigen::Vector3i facet = this->facets.row(i);
+		// Compute normal per triangle
+		Eigen::Vector3d v1 = this->vertices.row(facet[0]);
+		Eigen::Vector3d v2 = this->vertices.row(facet[1]);
+		Eigen::Vector3d v3 = this->vertices.row(facet[2]);
+		Eigen::Vector3d normal = (v2 - v1).cross(v3 - v1).normalized();
 		for (int j = 0; j < facet.size(); j++) {
-			Eigen::VectorXd vertex = this->vertices.row(facet[j]);
-			vertices.push_back(VertexAttributes(vertex[0], vertex[1], vertex[2]));
+			Eigen::Vector3d vertex = this->vertices.row(facet[j]);
+			vertices.push_back(VertexAttributes(vertex[0], vertex[1], vertex[2], 1, normal[0], normal[1], normal[2], 1));
 		}
 	}
 	return vertices;
