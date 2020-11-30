@@ -15,7 +15,7 @@
 
 using namespace std;
 
-void render_scene(const Scene &scene) {
+void render_scene(const Scene &scene, int shading_option) {
 	// The Framebuffer storing the image rendered by the rasterizer
 	Eigen::Matrix<FrameBufferAttributes,Eigen::Dynamic,Eigen::Dynamic> frameBuffer(500,500);
 
@@ -43,8 +43,26 @@ void render_scene(const Scene &scene) {
 		return FrameBufferAttributes(fa.color[0]*255,fa.color[1]*255,fa.color[2]*255,fa.color[3]*255);
 	};
 
-	rasterize_triangles(program, uniform, get_meshes_vertices(scene, "triangles"), frameBuffer);
-	// rasterize_lines(program, uniform, get_meshes_vertices(scene, "lines"), 1, frameBuffer);
+	switch (shading_option) {
+		// Wireframe
+		case 1: {
+			rasterize_lines(program, uniform, get_meshes_vertices(scene, "lines"), 1, frameBuffer);
+			break;
+		}
+		// Flat shading
+		case 2: {
+			break;
+		}
+		// Per-vertex shading
+		case 3: {
+			break;
+		}
+		// Basic
+		default: {
+			rasterize_triangles(program, uniform, get_meshes_vertices(scene, "triangles"), frameBuffer);
+			break;
+		}
+	}
 
 	vector<uint8_t> image;
 	framebuffer_to_uint8(frameBuffer,image);
@@ -54,10 +72,13 @@ void render_scene(const Scene &scene) {
 int main(int argc, char *argv[]) 
 {
 	if (argc < 2) {
-		std::cerr << "Usage: " << argv[0] << " scene.json" << std::endl;
+		std::cerr << "Usage: " << argv[0] << " scene.json" << "option: 0 | 1 | 2 | 3" << std::endl;
 		return 1;
 	}
 	Scene scene = load_scene(argv[1]);
-	render_scene(scene);
+	int option = stoi(argv[2], nullptr, 10);
+	option = option >= 0 && option < 4 ? option : 1;
+
+	render_scene(scene, option);
 	return 0;
 }
