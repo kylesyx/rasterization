@@ -7,7 +7,7 @@ class VertexAttributes
 {
 	public:
 	VertexAttributes(float x = 0, float y = 0, float z = 0, float w = 1, 
-	float nx = 0, float ny = 0, float nz = 0, float nw = 1)
+	float nx = 2, float ny = 0, float nz = 0, float nw = 1)
 	{
 		position << x, y, z, w;
 		color << 1, 1, 1, 1;
@@ -56,7 +56,7 @@ class FrameBufferAttributes
 		color << r,g,b,a;
 		// this value should be between -1 and 1
 		// 2 is further than the visible range
-		depth = 2; 
+		depth = -2; 
 	}
 
 	Eigen::Matrix<uint8_t,4,1> color;
@@ -66,6 +66,7 @@ class FrameBufferAttributes
 class UniformAttributes
 {
 	public:
+	bool force_color = false;
 	Eigen::Vector4d color;
 	Camera camera;
 	std::vector<Light> lights;
