@@ -65,4 +65,5 @@ class UniformAttributes
 	public:
 	Eigen::Vector4f color;
 	Camera camera;
+	std::vector<Light> lights;
 };

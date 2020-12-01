@@ -22,8 +22,8 @@ void render_scene(const Scene &scene, int shading_option) {
 	// Global Constants (empty in this example)
 	UniformAttributes uniform;
 	uniform.color << 1,1,1,1;
-	// uniform.camera_position = scene.camera.position;
-	// uniform.lights = scene.lights;
+	uniform.camera = scene.camera;
+	uniform.lights = scene.lights;
 
 	// Basic rasterization program
 	Program program;
