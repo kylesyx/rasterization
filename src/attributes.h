@@ -69,4 +69,7 @@ class UniformAttributes
 	Eigen::Vector4d color;
 	Camera camera;
 	std::vector<Light> lights;
+	Material material;
+	Vector3d background_color;
+	Vector3d ambient_light;
 };

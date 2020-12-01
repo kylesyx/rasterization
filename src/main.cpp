@@ -24,6 +24,9 @@ void render_scene(const Scene &scene, int shading_option) {
 
 	uniform.camera = scene.camera;
 	uniform.lights = scene.lights;
+	uniform.background_color = scene.background_color;
+	uniform.ambient_light = scene.ambient_light;
+	uniform.material = scene.materials[0];
 
 	// Basic rasterization program
 	Program program;
@@ -38,14 +41,14 @@ void render_scene(const Scene &scene, int shading_option) {
 	// The fragment shader
 	program.FragmentShader = [](const VertexAttributes& va, const UniformAttributes& uniform)
 	{
-		Vector3d ambient_color = Vector3d(0.0, 0.5, 0.0).array() * Vector3d(0.2, 0.2, 0.2).array();
+		Vector3d ambient_color = uniform.material.ambient_color.array() * uniform.ambient_light.array();
 		Vector3d lights_color(0, 0, 0);
 
 		for (const Light &light : uniform.lights) {
 			Vector3d Li = (light.position - va.position.head<3>()).normalized();
 			Vector3d N = va.normal.head<3>();
 
-			Vector3d diffuse = Vector3d(0.5, 0.5, 0.5) * std::max(Li.dot(N), 0.0);
+			Vector3d diffuse = uniform.material.diffuse_color * std::max(Li.dot(N), 0.0);
 			Vector3d specular(0, 0, 0);
 			Vector3d D = light.position - va.position.head<3>();
 			lights_color += (diffuse + specular).cwiseProduct(light.intensity) /  D.squaredNorm();
