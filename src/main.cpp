@@ -6,8 +6,8 @@
 // Utilities for the Assignment
 #include "raster.h"
 #include "types.h"
-#include "load.h"
 #include "mesh.h"
+#include "load.h"
 
 // Image writing library
 #define STB_IMAGE_WRITE_IMPLEMENTATION // Do not include this line twice in your project!
@@ -22,6 +22,8 @@ void render_scene(const Scene &scene, int shading_option) {
 	// Global Constants (empty in this example)
 	UniformAttributes uniform;
 	uniform.color << 1,1,1,1;
+	// uniform.camera_position = scene.camera.position;
+	// uniform.lights = scene.lights;
 
 	// Basic rasterization program
 	Program program;

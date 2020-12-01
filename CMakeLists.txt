@@ -5,6 +5,7 @@ project(assignment5)
 add_executable("assignment5"
 	src/main.cpp
 	src/raster.h
+	src/attributes.h
 	src/raster.cpp
 	src/bvh.cpp
 	src/intersect.cpp

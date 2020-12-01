@@ -13,13 +13,12 @@
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
 
-#include "attributes.h"
-
 using namespace Eigen;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Define types & classes
 ////////////////////////////////////////////////////////////////////////////////
+class VertexAttributes;
 
 struct Ray {
 	Vector3d origin;
@@ -80,23 +79,8 @@ struct Object {
 	virtual bool intersect(const Ray &ray, Intersection &hit) = 0;
 };
 
-struct Mesh : public Object {
-	MatrixXd vertices; // n x 3 matrix (n points)
-	MatrixXi facets; // m x 3 matrix (m triangles)
-
-	AABBTree bvh;
-
-	Mesh() = default; // Default empty constructor
-	Mesh(const std::string &filename);
-	virtual ~Mesh() = default;
-	virtual bool intersect(const Ray &ray, Intersection &hit) override;
-	virtual std::vector<VertexAttributes> get_triangles_vertices();
-	virtual std::vector<VertexAttributes> get_lines_vertices();
-};
-
 // We use smart pointers to hold objects as this is a virtual class
 typedef std::shared_ptr<Object> ObjectPtr;
-typedef std::shared_ptr<Mesh> MeshPtr;
 
 struct Sphere : public Object {
 	Vector3d position;
@@ -114,6 +98,22 @@ struct Parallelogram : public Object {
 	virtual ~Parallelogram() = default;
 	virtual bool intersect(const Ray &ray, Intersection &hit) override;
 };
+
+struct Mesh : public Object {
+	MatrixXd vertices; // n x 3 matrix (n points)
+	MatrixXi facets; // m x 3 matrix (m triangles)
+
+	AABBTree bvh;
+
+	Mesh() = default; // Default empty constructor
+	Mesh(const std::string &filename);
+	virtual ~Mesh() = default;
+	virtual bool intersect(const Ray &ray, Intersection &hit) override;
+	virtual std::vector<VertexAttributes> get_triangles_vertices();
+	virtual std::vector<VertexAttributes> get_lines_vertices();
+};
+
+typedef std::shared_ptr<Mesh> MeshPtr;
 
 struct Scene {
 	Vector3d background_color;

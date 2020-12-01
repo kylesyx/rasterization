@@ -1,4 +1,5 @@
 #include "mesh.h"
+#include "load.h"
 
 Mesh::Mesh(const std::string &filename) {
 	// Load a mesh from a file (assuming this is a .off file), and create a bvh

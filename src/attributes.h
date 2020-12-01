@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Eigen/Core>
+#include "types.h"
 
 class VertexAttributes
 {
@@ -23,7 +24,8 @@ class VertexAttributes
     ) 
     {
         VertexAttributes r;
-        r.position = alpha*a.position + beta*b.position + gamma*c.position;
+        r.position = alpha * a.position + beta * b.position + gamma * c.position;
+				r.normal = alpha * a.position + beta * b.position + gamma * c.position;
         return r;
     }
 
@@ -62,4 +64,5 @@ class UniformAttributes
 {
 	public:
 	Eigen::Vector4f color;
+	Camera camera;
 };
