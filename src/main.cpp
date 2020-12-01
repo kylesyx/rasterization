@@ -21,7 +21,7 @@ void render_scene(const Scene &scene, int shading_option) {
 
 	// Global Constants (empty in this example)
 	UniformAttributes uniform;
-	uniform.color << 1,1,1,1;
+
 	uniform.camera = scene.camera;
 	uniform.lights = scene.lights;
 
@@ -38,16 +38,23 @@ void render_scene(const Scene &scene, int shading_option) {
 	// The fragment shader
 	program.FragmentShader = [](const VertexAttributes& va, const UniformAttributes& uniform)
 	{
-		FragmentAttributes out(uniform.color(0),uniform.color(1),uniform.color(2),uniform.color(3));
+		Vector3d ambient_color = Vector3d(0.0, 0.5, 0.0).array() * Vector3d(0.2, 0.2, 0.2).array();
+		Vector3d lights_color(0, 0, 0);
 
 		for (const Light &light : uniform.lights) {
 			Vector3d Li = (light.position - va.position.head<3>()).normalized();
 			Vector3d N = va.normal.head<3>();
+
+			Vector3d diffuse = Vector3d(0.5, 0.5, 0.5) * std::max(Li.dot(N), 0.0);
+			Vector3d specular(0, 0, 0);
+			Vector3d D = light.position - va.position.head<3>();
+			lights_color += (diffuse + specular).cwiseProduct(light.intensity) /  D.squaredNorm();
 		}
 
-		// Vector3d ambient_color = obj.material.ambient_color.array() * scene.ambient_light.array();
+		Vector3d C = ambient_color + lights_color;
 
-		// out.position = va.position;
+		FragmentAttributes out(C(0), C(1), C(2), 1);
+		
 		return out;
 	};
 
@@ -74,6 +81,7 @@ void render_scene(const Scene &scene, int shading_option) {
 		// Flat shading
 		case 2: {
 			rasterize_triangles(program, uniform, get_meshes_vertices(scene, "triangles"), frameBuffer);
+			rasterize_lines(program, uniform, get_meshes_vertices(scene, "lines"), 5, frameBuffer);
 			break;
 		}
 		// Per-vertex shading

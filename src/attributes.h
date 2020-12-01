@@ -10,26 +10,29 @@ class VertexAttributes
 	float nx = 0, float ny = 0, float nz = 0, float nw = 1)
 	{
 		position << x, y, z, w;
+		color << 1, 1, 1, 1;
 		normal << nx, ny, nz, w;
 	}
 
-    // Interpolates the vertex attributes
-    static VertexAttributes interpolate(
-        const VertexAttributes& a,
-        const VertexAttributes& b,
-        const VertexAttributes& c,
-        const float alpha, 
-        const float beta, 
-        const float gamma
-    ) 
-    {
-        VertexAttributes r;
-        r.position = alpha * a.position + beta * b.position + gamma * c.position;
-				r.normal = alpha * a.position + beta * b.position + gamma * c.position;
-        return r;
-    }
+	// Interpolates the vertex attributes
+	static VertexAttributes interpolate(
+			const VertexAttributes& a,
+			const VertexAttributes& b,
+			const VertexAttributes& c,
+			const float alpha, 
+			const float beta, 
+			const float gamma
+	) 
+	{
+		VertexAttributes r;
+		r.position = alpha * a.position + beta * b.position + gamma * c.position;
+		r.color = alpha * a.position + beta * b.position + gamma * c.position;
+		r.normal = alpha * a.normal + beta * b.normal + gamma * c.normal;
+		return r;
+	}
 
 	Eigen::Vector4d position;
+	Eigen::Vector4d color;
 	Eigen::Vector4d normal;
 };
 
