@@ -29,8 +29,8 @@ class VertexAttributes
         return r;
     }
 
-	Eigen::Vector4f position;
-	Eigen::Vector4f normal;
+	Eigen::Vector4d position;
+	Eigen::Vector4d normal;
 };
 
 class FragmentAttributes
@@ -41,8 +41,8 @@ class FragmentAttributes
 		color << r,g,b,a;
 	}
 
-	Eigen::Vector4f color;
-	Eigen::Vector4f position;
+	Eigen::Vector4d color;
+	Eigen::Vector4d position;
 };
 
 class FrameBufferAttributes
@@ -63,7 +63,7 @@ class FrameBufferAttributes
 class UniformAttributes
 {
 	public:
-	Eigen::Vector4f color;
+	Eigen::Vector4d color;
 	Camera camera;
 	std::vector<Light> lights;
 };

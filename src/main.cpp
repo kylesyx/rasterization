@@ -31,14 +31,23 @@ void render_scene(const Scene &scene, int shading_option) {
 	// The vertex shader is the identity
 	program.VertexShader = [](const VertexAttributes& va, const UniformAttributes& uniform)
 	{
-		return va;
+		VertexAttributes out = va;
+		return out;
 	};
 
-	// The fragment shader uses a fixed color
+	// The fragment shader
 	program.FragmentShader = [](const VertexAttributes& va, const UniformAttributes& uniform)
 	{
 		FragmentAttributes out(uniform.color(0),uniform.color(1),uniform.color(2),uniform.color(3));
-		out.position = va.position;
+
+		for (const Light &light : uniform.lights) {
+			Vector3d Li = (light.position - va.position.head<3>()).normalized();
+			Vector3d N = va.normal.head<3>();
+		}
+
+		// Vector3d ambient_color = obj.material.ambient_color.array() * scene.ambient_light.array();
+
+		// out.position = va.position;
 		return out;
 	};
 

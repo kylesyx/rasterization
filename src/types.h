@@ -32,12 +32,6 @@ struct Light {
 	Vector3d intensity;
 };
 
-struct Intersection {
-	Vector3d position;
-	Vector3d normal;
-	double ray_param;
-};
-
 struct Camera {
 	bool is_perspective;
 	Vector3d position;
@@ -76,7 +70,6 @@ struct AABBTree {
 struct Object {
 	Material material;
 	virtual ~Object() = default; // Classes with virtual methods should have a virtual destructor!
-	virtual bool intersect(const Ray &ray, Intersection &hit) = 0;
 };
 
 // We use smart pointers to hold objects as this is a virtual class
@@ -87,7 +80,6 @@ struct Sphere : public Object {
 	double radius;
 
 	virtual ~Sphere() = default;
-	virtual bool intersect(const Ray &ray, Intersection &hit) override;
 };
 
 struct Parallelogram : public Object {
@@ -96,7 +88,6 @@ struct Parallelogram : public Object {
 	Vector3d v;
 
 	virtual ~Parallelogram() = default;
-	virtual bool intersect(const Ray &ray, Intersection &hit) override;
 };
 
 struct Mesh : public Object {
@@ -108,7 +99,6 @@ struct Mesh : public Object {
 	Mesh() = default; // Default empty constructor
 	Mesh(const std::string &filename);
 	virtual ~Mesh() = default;
-	virtual bool intersect(const Ray &ray, Intersection &hit) override;
 	virtual std::vector<VertexAttributes> get_triangles_vertices();
 	virtual std::vector<VertexAttributes> get_lines_vertices();
 };

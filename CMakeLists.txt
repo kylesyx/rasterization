@@ -8,7 +8,6 @@ add_executable("assignment5"
 	src/attributes.h
 	src/raster.cpp
 	src/bvh.cpp
-	src/intersect.cpp
 	src/load.cpp
 	src/load.h
 	src/types.h
