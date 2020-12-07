@@ -17,6 +17,7 @@
 
 // Image writing library
 #define STB_IMAGE_WRITE_IMPLEMENTATION // Do not include this line twice in your project!
+#define PI           3.14159265358979323846
 #include "stb_image_write.h"
 
 using namespace std;
@@ -38,6 +39,7 @@ void render_scene(Scene &scene, int shading_option) {
 	Vector3d w = -(scene.camera.gaze_direction.normalized());
 	Vector3d u = (scene.camera.view_up.cross(w)).normalized();
 	Vector3d v = w.cross(u).normalized();
+	
 	Matrix4d M;
 	M <<
 	u(0), v(0), w(0), e(0),
@@ -71,6 +73,15 @@ void render_scene(Scene &scene, int shading_option) {
 	1, 0, 0, 0,
 	0, 1, 0, 0,
 	0, 0, 1, 0,
+	0, 0, 0, 1;
+
+	uniform.rotation_angle = 0;
+	float c = cos(uniform.rotation_angle * PI / 180);
+	float s = sin(uniform.rotation_angle * PI / 180);
+	uniform.rotation_matrix <<
+	c, 0, s, 0,
+	0, 1, 0, 0,
+	-s, 0, c, 0,
 	0, 0, 0, 1;
 
 	uniform.translate_matrix = M_translate;

@@ -8,7 +8,7 @@ void render_wireframe(const Scene &scene, FrameBuffer& frameBuffer, UniformAttri
 	program.VertexShader = [](const VertexAttributes& va, const UniformAttributes& uniform)
 	{
 		VertexAttributes out = va;
-		out.position = uniform.M * uniform.translate_matrix * out.position;
+		out.position = uniform.M * uniform.translate_matrix * uniform.rotation_matrix * out.position;
 		return out;
 	};
 
