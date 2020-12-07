@@ -1,21 +1,7 @@
 #include "raster.h"
 #include "mesh.h"
 
-void render_wireframe(const Scene &scene, FrameBuffer& frameBuffer) {
-	UniformAttributes uniform;
-
-	uniform.color << 1,1,1,1;
-	uniform.camera = scene.camera;
-	uniform.lights = scene.lights;
-	uniform.background_color = scene.background_color;
-	uniform.ambient_light = scene.ambient_light;
-	uniform.material = scene.materials[0];
-	uniform.translate_matrix << 
-	1, 0, 0, 0,
-	0, 1, 0, 0,
-	0, 0, 1, 1,
-	0, 0, 0, 1;
-
+void render_wireframe(const Scene &scene, FrameBuffer& frameBuffer, UniformAttributes &uniform) {
   // Basic rasterization program
 	Program program;
 

@@ -74,4 +74,5 @@ class UniformAttributes
 	Vector3d background_color;
 	Vector3d ambient_light;
 	Matrix4d translate_matrix;
+	Matrix4d camera_transformation;
 };
