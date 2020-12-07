@@ -13,6 +13,8 @@ add_executable("assignment5"
 	src/types.h
 	src/mesh.h
 	src/mesh.cpp
+	src/transformation.h
+	src/transformation.cpp
 )
 
 # Include Eigen for linear algebra

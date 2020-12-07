@@ -8,10 +8,12 @@
 #include "types.h"
 #include "mesh.h"
 #include "load.h"
+#include "transformation.h"
 #include "shading_wireframe.cpp"
 #include "shading_flat.cpp"
 #include "shading_basic.cpp"
 #include "shading_per_vertex.cpp"
+#include "render_animation.cpp"
 
 // Image writing library
 #define STB_IMAGE_WRITE_IMPLEMENTATION // Do not include this line twice in your project!
@@ -21,7 +23,7 @@ using namespace std;
 
 void render_scene(const Scene &scene, int shading_option) {
 	// The Framebuffer storing the image rendered by the rasterizer
-	Eigen::Matrix<FrameBufferAttributes,Eigen::Dynamic,Eigen::Dynamic> frameBuffer(500,500);
+	Eigen::Matrix<FrameBufferAttributes,Eigen::Dynamic,Eigen::Dynamic> frameBuffer(50,50);
 
 	switch (shading_option) {
 		// Wireframe
@@ -37,6 +39,12 @@ void render_scene(const Scene &scene, int shading_option) {
 		// Per-vertex shading
 		case 3: {
 			render_per_vertex(scene, frameBuffer);
+			break;
+		}
+		// Animation
+		case 4: {
+			render_animation(scene, frameBuffer);
+			return;
 			break;
 		}
 		// Basic
@@ -59,7 +67,7 @@ int main(int argc, char *argv[])
 	}
 	Scene scene = load_scene(argv[1]);
 	int option = stoi(argv[2], nullptr, 10);
-	option = option >= 0 && option < 4 ? option : 1;
+	option = option >= 0 && option < 5 ? option : 1;
 
 	render_scene(scene, option);
 	return 0;
