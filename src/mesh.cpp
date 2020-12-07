@@ -28,7 +28,6 @@ std::vector<VertexAttributes> Mesh::get_triangles_vertices() {
 std::vector<VertexAttributes> Mesh::get_triangles_per_vertices() {
 	std::vector<VertexAttributes> vertices;
 	MatrixXd N = MatrixXd::Zero(this->vertices.rows(), 3);
-	std::cout << N << std::endl;
 	for (int i = 0; i < this->facets.rows(); i++) {
 		// v1 v2 v3
 		Eigen::Vector3i facet = this->facets.row(i);
@@ -40,11 +39,20 @@ std::vector<VertexAttributes> Mesh::get_triangles_per_vertices() {
 		N.row(facet[0]) += normal;
 		N.row(facet[1]) += normal;
 		N.row(facet[2]) += normal;
+	}
+
+	for (int i = 0; i < this->facets.rows(); i++) {
+		// v1 v2 v3
+		Eigen::Vector3i facet = this->facets.row(i);
+		// Compute normal per triangle
 		for (int j = 0; j < facet.size(); j++) {
 			Eigen::Vector3d vertex = this->vertices.row(facet[j]);
-			vertices.push_back(VertexAttributes(vertex[0], vertex[1], vertex[2], 1, normal[0], normal[1], normal[2], 1));
+			VectorXd normal = N.row(facet[j]).normalized();
+			VertexAttributes v(vertex(0), vertex(1), vertex(2), 1, normal(0), normal(1), normal(2), 1);
+			vertices.push_back(v);
 		}
 	}
+
 	return vertices;
 }
 
