@@ -10,6 +10,11 @@ void render_wireframe(const Scene &scene, FrameBuffer& frameBuffer) {
 	uniform.background_color = scene.background_color;
 	uniform.ambient_light = scene.ambient_light;
 	uniform.material = scene.materials[0];
+	uniform.translate_matrix << 
+	1, 0, 0, 0,
+	0, 1, 0, 0,
+	0, 0, 1, 1,
+	0, 0, 0, 1;
 
   // Basic rasterization program
 	Program program;
@@ -18,6 +23,8 @@ void render_wireframe(const Scene &scene, FrameBuffer& frameBuffer) {
 	program.VertexShader = [](const VertexAttributes& va, const UniformAttributes& uniform)
 	{
 		VertexAttributes out = va;
+		out.position = uniform.translate_matrix * out.position;
+
 		return out;
 	};
 

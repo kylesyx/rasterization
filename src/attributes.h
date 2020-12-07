@@ -73,4 +73,5 @@ class UniformAttributes
 	Material material;
 	Vector3d background_color;
 	Vector3d ambient_light;
+	Matrix4d translate_matrix;
 };
