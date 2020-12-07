@@ -23,7 +23,7 @@ using namespace std;
 
 void render_scene(Scene &scene, int shading_option) {
 	// The Framebuffer storing the image rendered by the rasterizer
-	Eigen::Matrix<FrameBufferAttributes,Eigen::Dynamic,Eigen::Dynamic> frameBuffer(50,50);
+	Eigen::Matrix<FrameBufferAttributes,Eigen::Dynamic,Eigen::Dynamic> frameBuffer(500,500);
 
 	UniformAttributes uniform;
 
@@ -34,29 +34,42 @@ void render_scene(Scene &scene, int shading_option) {
 	uniform.ambient_light = scene.ambient_light;
 	uniform.material = scene.materials[0];
 
+	Vector3d e = scene.camera.position;
+	Vector3d w = -(scene.camera.gaze_direction.normalized());
+	Vector3d u = (scene.camera.view_up.cross(w)).normalized();
+	Vector3d v = w.cross(u).normalized();
+	Matrix4d M;
+	M <<
+	u(0), v(0), w(0), e(0),
+	u(1), v(1), w(1), e(1),
+	u(2), v(2), w(2), e(2),
+	0, 0, 0, 1;
+
+	uniform.camera_transformation = M.inverse();
+
 	switch (shading_option) {
-		// Wireframe
+		// 1: Wireframe
 		case 1: {
 			render_wireframe(scene, frameBuffer, uniform);
 			break;
 		}
-		// Flat shading
+		// 2: Flat shading
 		case 2: {
 			render_flat(scene, frameBuffer, uniform);
 			break;
 		}
-		// Per-vertex shading
+		// 3: Per-vertex shading
 		case 3: {
 			render_per_vertex(scene, frameBuffer, uniform);
 			break;
 		}
-		// Animation
+		// 4: Animation
 		case 4: {
 			render_animation(scene, frameBuffer, uniform);
 			return;
 			break;
 		}
-		// Basic
+		// 0: Basic
 		default: {
 			render_basic(scene, frameBuffer, uniform);
 			break;

@@ -9,6 +9,7 @@ void render_wireframe(const Scene &scene, FrameBuffer& frameBuffer, UniformAttri
 	program.VertexShader = [](const VertexAttributes& va, const UniformAttributes& uniform)
 	{
 		VertexAttributes out = va;
+		out.position = uniform.camera_transformation * out.position;
 		return out;
 	};
 
