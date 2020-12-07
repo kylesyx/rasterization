@@ -21,7 +21,7 @@
 
 using namespace std;
 
-void render_scene(const Scene &scene, int shading_option) {
+void render_scene(Scene &scene, int shading_option) {
 	// The Framebuffer storing the image rendered by the rasterizer
 	Eigen::Matrix<FrameBufferAttributes,Eigen::Dynamic,Eigen::Dynamic> frameBuffer(50,50);
 

@@ -2,4 +2,4 @@
 
 #include "types.h"
 
-void translate(Scene &scene, double x, double y, double z);
+void translate_scene(Scene &scene, double x, double y, double z);
