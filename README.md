@@ -20,5 +20,8 @@ InstalledDir: /Library/Developer/CommandLineTools/usr/bin
 ## Ex.2.3 Flat shading with Wireframe
 ![](img/flat_2.png)
 
----------
-![](img/bunny.png)
+## Ex.2.3 Per Vertex
+![](img/per_vertex.png)
+
+## Ex.3 Animation
+![](img/animation.gif)
