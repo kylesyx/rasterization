@@ -23,8 +23,6 @@ void render_wireframe(const Scene &scene, FrameBuffer& frameBuffer) {
 	program.VertexShader = [](const VertexAttributes& va, const UniformAttributes& uniform)
 	{
 		VertexAttributes out = va;
-		out.position = uniform.translate_matrix * out.position;
-
 		return out;
 	};
 

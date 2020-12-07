@@ -38,6 +38,8 @@ struct Camera {
 	double field_of_view; // between 0 and PI
 	double focal_length;
 	double lens_radius; // for depth of field
+	Vector3f view_up = {0,1,0};
+	Vector3f gaze_direction = {0,0,-1};
 };
 
 struct Material {
@@ -109,6 +111,7 @@ typedef std::shared_ptr<Mesh> MeshPtr;
 struct Scene {
 	Vector3d background_color;
 	Vector3d ambient_light;
+	Vector3d gaze_direction = {0, 0, -1};
 
 	Camera camera;
 	std::vector<Material> materials;
