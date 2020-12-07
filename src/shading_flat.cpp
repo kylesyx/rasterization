@@ -10,6 +10,7 @@ void render_flat(const Scene &scene, FrameBuffer& frameBuffer, UniformAttributes
 	program.VertexShader = [](const VertexAttributes& va, const UniformAttributes& uniform)
 	{
 		VertexAttributes out = va;
+		out.position = uniform.M * uniform.translate_matrix * uniform.rotation_matrix * out.position;
 		return out;
 	};
 

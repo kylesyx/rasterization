@@ -25,6 +25,8 @@ void render_per_vertex(const Scene &scene, FrameBuffer& frameBuffer, UniformAttr
 		Vector3d C = ambient_color + lights_color;
 		out.color = Vector4d(C(0), C(1), C(2), 1);
 		out.position = va.position;
+
+		out.position = uniform.M * uniform.translate_matrix * uniform.rotation_matrix * out.position;
 		return out;
 	};
 
