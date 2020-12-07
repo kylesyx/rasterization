@@ -75,4 +75,6 @@ class UniformAttributes
 	Vector3d ambient_light;
 	Matrix4d translate_matrix;
 	Matrix4d camera_transformation;
+	Matrix4d orth_projection;
+	Matrix4d M;
 };

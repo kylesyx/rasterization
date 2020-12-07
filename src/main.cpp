@@ -45,7 +45,31 @@ void render_scene(Scene &scene, int shading_option) {
 	u(2), v(2), w(2), e(2),
 	0, 0, 0, 1;
 
+	double f = -9999;
+	double n = -0.001;
+	double t = std::abs(n) * std::tan(scene.camera.field_of_view / 2);
+	double r = frameBuffer.rows() / frameBuffer.cols() * t;
+	double b = -t;
+	double l = -r;
+	
+	Matrix4d M_orth;
+	M_orth <<
+	2 / (r - l), 0, 0, -(r + l) / (r - l),
+	0, 2 / (t - b), 0, -(t + b) / (t - b),
+	0, 0, 2 / (n - f), -(n + f) / (n - f),
+	0, 0, 0, 1;
+
+	Matrix4d M_perspective;
+	M_perspective << 
+	n, 0, 0, 0,
+	0, n, 0, 0,
+	0, 0, n + f, -(f * n),
+	0, 0, 1, 0;
+
+	uniform.M = M_orth * M_perspective * M.inverse();
+	uniform.orth_projection = M_orth;
 	uniform.camera_transformation = M.inverse();
+
 
 	switch (shading_option) {
 		// 1: Wireframe
