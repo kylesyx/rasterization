@@ -11,8 +11,6 @@ add_executable("assignment5"
 	src/load.cpp
 	src/load.h
 	src/types.h
-	src/shaders.h
-	src/shaders.cpp
 	src/mesh.h
 	src/mesh.cpp
 )
