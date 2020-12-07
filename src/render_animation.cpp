@@ -13,6 +13,7 @@ void render_animation(const Scene &scene, FrameBuffer& frameBuffer, UniformAttri
   for (float i = 0; i < 1; i += 0.05)
   {
     frameBuffer.setConstant(FrameBufferAttributes());
+    uniform.translate_matrix(2, 3) += 0.2;
     render_wireframe(scene, frameBuffer, uniform);
     framebuffer_to_uint8(frameBuffer,image);
     GifWriteFrame(&g, image.data(), frameBuffer.rows(), frameBuffer.cols(), delay);

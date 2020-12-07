@@ -66,6 +66,14 @@ void render_scene(Scene &scene, int shading_option) {
 	0, 0, n + f, -(f * n),
 	0, 0, 1, 0;
 
+	Matrix4d M_translate;
+	M_translate <<
+	1, 0, 0, 0,
+	0, 1, 0, 0,
+	0, 0, 1, 0,
+	0, 0, 0, 1;
+
+	uniform.translate_matrix = M_translate;
 	uniform.M = M_orth * M_perspective * M.inverse();
 	uniform.orth_projection = M_orth;
 	uniform.camera_transformation = M.inverse();

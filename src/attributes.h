@@ -77,4 +77,5 @@ class UniformAttributes
 	Matrix4d camera_transformation;
 	Matrix4d orth_projection;
 	Matrix4d M;
+	Matrix4d rotation_matrix;
 };

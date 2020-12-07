@@ -4,12 +4,11 @@
 void render_wireframe(const Scene &scene, FrameBuffer& frameBuffer, UniformAttributes &uniform) {
   // Basic rasterization program
 	Program program;
-
 	// The vertex shader is the identity
 	program.VertexShader = [](const VertexAttributes& va, const UniformAttributes& uniform)
 	{
 		VertexAttributes out = va;
-		out.position = uniform.M * out.position;
+		out.position = uniform.M * uniform.translate_matrix * out.position;
 		return out;
 	};
 
