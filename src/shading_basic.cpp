@@ -61,5 +61,5 @@ void render_basic(const Scene &scene, FrameBuffer& frameBuffer) {
 		}
 	};
 
-	rasterize_triangles(program, uniform, get_meshes_vertices(scene, "triangles"), frameBuffer);
+	rasterize_triangles(program, uniform, get_meshes_vertices(scene, 0), frameBuffer);
 }

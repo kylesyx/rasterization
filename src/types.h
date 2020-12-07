@@ -100,6 +100,7 @@ struct Mesh : public Object {
 	Mesh(const std::string &filename);
 	virtual ~Mesh() = default;
 	virtual std::vector<VertexAttributes> get_triangles_vertices();
+	virtual std::vector<VertexAttributes> get_triangles_per_vertices();
 	virtual std::vector<VertexAttributes> get_lines_vertices();
 };
 

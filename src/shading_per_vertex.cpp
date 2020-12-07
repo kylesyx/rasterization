@@ -61,7 +61,5 @@ void render_per_vertex(const Scene &scene, FrameBuffer& frameBuffer) {
 		}
 	};
 
-	rasterize_triangles(program, uniform, get_meshes_vertices(scene, "triangles"), frameBuffer);
-	uniform.force_color = true;
-	rasterize_lines(program, uniform, get_meshes_vertices(scene, "lines"), 1, frameBuffer);
+	rasterize_triangles(program, uniform, get_meshes_vertices(scene, 1), frameBuffer);
 }

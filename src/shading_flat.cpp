@@ -61,7 +61,7 @@ void render_flat(const Scene &scene, FrameBuffer& frameBuffer) {
 		}
 	};
 
-	rasterize_triangles(program, uniform, get_meshes_vertices(scene, "triangles"), frameBuffer);
+	rasterize_triangles(program, uniform, get_meshes_vertices(scene, 0), frameBuffer);
 	uniform.force_color = true;
-	rasterize_lines(program, uniform, get_meshes_vertices(scene, "lines"), 1, frameBuffer);
+	rasterize_lines(program, uniform, get_meshes_vertices(scene, 2), 1, frameBuffer);
 }

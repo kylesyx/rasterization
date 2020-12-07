@@ -61,5 +61,5 @@ void render_wireframe(const Scene &scene, FrameBuffer& frameBuffer) {
 		}
 	};
 
-  rasterize_lines(program, uniform, get_meshes_vertices(scene, "lines"), 1, frameBuffer);
+  rasterize_lines(program, uniform, get_meshes_vertices(scene, 2), 1, frameBuffer);
 }
