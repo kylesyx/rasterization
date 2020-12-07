@@ -26,7 +26,7 @@ class VertexAttributes
 	{
 		VertexAttributes r;
 		r.position = alpha * a.position + beta * b.position + gamma * c.position;
-		r.color = alpha * a.position + beta * b.position + gamma * c.position;
+		r.color = alpha * a.color + beta * b.color + gamma * c.color;
 		r.normal = alpha * a.normal + beta * b.normal + gamma * c.normal;
 		return r;
 	}
