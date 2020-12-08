@@ -47,6 +47,8 @@ void render_scene(Scene &scene, int shading_option) {
 	u(2), v(2), w(2), e(2),
 	0, 0, 0, 1;
 
+	uniform.camera_transformation = M.inverse();
+
 	double f = -9999;
 	double n = -0.001;
 	double t = std::abs(n) * std::tan(scene.camera.field_of_view / 2);
@@ -60,6 +62,7 @@ void render_scene(Scene &scene, int shading_option) {
 	0, 2 / (t - b), 0, -(t + b) / (t - b),
 	0, 0, 2 / (n - f), -(n + f) / (n - f),
 	0, 0, 0, 1;
+	uniform.orth_projection = M_orth;
 
 	Matrix4d M_perspective;
 	M_perspective << 
@@ -67,6 +70,7 @@ void render_scene(Scene &scene, int shading_option) {
 	0, n, 0, 0,
 	0, 0, n + f, -(f * n),
 	0, 0, 1, 0;
+	uniform.perspective = M_perspective;
 
 	Matrix4d M_translate;
 	M_translate <<
@@ -85,9 +89,7 @@ void render_scene(Scene &scene, int shading_option) {
 	0, 0, 0, 1;
 
 	uniform.translate_matrix = M_translate;
-	uniform.M = M_orth * M_perspective * M.inverse();
-	uniform.orth_projection = M_orth;
-	uniform.camera_transformation = M.inverse();
+	uniform.M = uniform.orth_projection * uniform.perspective * uniform.camera_transformation;
 
 
 	switch (shading_option) {

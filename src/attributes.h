@@ -78,5 +78,6 @@ class UniformAttributes
 	Matrix4d orth_projection;
 	Matrix4d M;
 	Matrix4d rotation_matrix;
+	Matrix4d perspective;
 	double rotation_angle;
 };
